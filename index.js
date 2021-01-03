@@ -1,53 +1,117 @@
 const inquirer = require("inquirer");
 const db = require("./db");
+const connection = require("./db/connection")
+
 
 function askForAction() {
 
     inquirer
         .prompt({
-            message: "Choose what you would like to search.",
+            message: "Choose what you would like to do",
             name: "action",
             type: "list",
             choices: [
                 "VIEW_DEPARTMENTS", 
                 "VIEW_ROLES", 
-                "VIEW_EMPLOYEES", 
+                "VIEW_EMPLOYEES",
+                "CREATE_ROLE",
                 "QUIT"
             ]
         })
-        // .then((res) => {
+        .then((res) => {
 
-        //     switch(res.action) {
+            switch(res.action) {
 
-        //         case "GET_SONGS_BY_ARTIST":
-        //             getSongsByArtist()
-        //             return;
+                case "VIEW_DEPARTMENTS":
+                    viewDepartments();
+                    return;
 
-        //         case "GET_ARTISTS_WITH_MULTIPLE_TOP_SONGS":
-        //             getArtistsMulti()
-        //             return;
+                case "VIEW_ROLES":
+                    viewRoles();
+                    return;
 
-        //         case "GET_RANGE":
-        //             getRange()
-        //             return;
+                case "VIEW_EMPLOYEES":
+                    viewEmployees();
+                    return;
 
-        //         case "GET_SONG":
-        //             getSong()
-        //             return;
+                case "CREATE_ROLE":
+                    createRole();
+                    return;
                 
-        //         case "GET_SONG_AND_ALBUM_BY_ARTIST":
-        //             getSongAndAlbumByArtist()
-        //             return;
-                
-        //         default:
-        //             connection.end();
+                default:
+                    connection.end();
 
-        //     }
-        // })
+            }
+        })
 }
 
-db.getDepartments().then((results) => {
+function viewDepartments() {
 
-    console.log(results);
+    db
+        .getDepartments()
+        .then((results) => {
 
-});
+            console.table(results);
+
+            askForAction();
+        
+        });
+}
+
+function viewRoles() {
+
+    db
+        .getRoles()
+        .then((results) => {
+
+            console.table(results);
+            
+            askForAction();
+        
+        });
+}
+
+function viewEmployees() {
+
+    db
+        .getEmployees()
+        .then((results) => {
+
+            console.table(results);
+            
+            askForAction();
+        
+        });
+}
+
+// function createRole() {
+
+//     db
+//         .getDepartments()
+//         .then((departments) => {
+
+//             const departmentChoices = 
+//                 departments.map((department) => ({
+//                     value: department.id,
+//                     name: department.name
+//                 }))
+
+//             inquirer
+//                 .prompt([
+//                     {
+//                         message: "What department is this role a part of?",
+//                         name: "department_id",
+//                         type: "list",
+//                         choices: departmentChoices
+//                     },
+//                 ])
+//                 .then(res => {
+
+//                     console.log(res);
+
+//                 })
+            
+//         });
+// }
+
+askForAction();

@@ -16,8 +16,6 @@ connection.connect((err) => {
     if (err) throw err;
     console.log("connected as id " + connection.threadId + "\n");
 
-    askForAction();
-
 });
 
 connection.query = util.promisify(connection.query);
