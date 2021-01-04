@@ -16,6 +16,7 @@ function askForAction() {
                 "VIEW_EMPLOYEES",
                 "CREATE_ROLE",
                 "CREATE_DEPARTMENT",
+                "CREATE_EMPLOYEE",
                 "QUIT"
             ]
         })
@@ -41,6 +42,10 @@ function askForAction() {
 
                 case "CREATE_DEPARTMENT":
                     createDepartment();
+                    return;
+
+                case "CREATE_EMPLOYEE":
+                    createEmployee();
                     return;
 
                 default:
@@ -159,6 +164,65 @@ function createRole() {
                     askForAction();
 
                 })
+
+        });
+}
+
+function createEmployee() {
+
+    db
+        .getRoles()
+        // .then(db.getEmployees())
+        .then((roles) => {
+
+            const roleChoices =
+                roles.map((role) => ({
+                    value: role.id,
+                    name: role.title
+                }))
+
+            // const employeeChoices =
+            //     employees.map((employee) => ({
+            //         value: employee.id,
+            //         name: employee.first_name
+            //     }))
+
+            inquirer
+                .prompt([
+                    {
+                        message: "What is the employee's FIRST name?",
+                        name: "first_name",
+                        type: "input"
+                    },
+                    {
+                        message: "What is the employee's LAST name?",
+                        name: "last_name",
+                        type: "input",
+                    },
+                    {
+                        message: "What is their role?",
+                        name: "role_id",
+                        type: "list",
+                        choices: roleChoices
+                    },
+                    // {
+                    //     message: "Who is their manager?",
+                    //     name: "role_id",
+                    //     type: "list",
+                    //     choices: employeeChoices
+                    // }
+                ])
+                // .then(res => {
+
+                //     console.log(res);
+
+                //     db.insertRole(res);
+
+                //     console.log("Role was successfully created!");
+
+                //     askForAction();
+
+                // })
 
         });
 }
