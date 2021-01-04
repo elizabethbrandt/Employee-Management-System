@@ -1,5 +1,4 @@
 const inquirer = require("inquirer");
-const { insertRole } = require("./db");
 const db = require("./db");
 const connection = require("./db/connection")
 
@@ -12,16 +11,17 @@ function askForAction() {
             name: "action",
             type: "list",
             choices: [
-                "VIEW_DEPARTMENTS", 
-                "VIEW_ROLES", 
+                "VIEW_DEPARTMENTS",
+                "VIEW_ROLES",
                 "VIEW_EMPLOYEES",
                 "CREATE_ROLE",
+                "CREATE_DEPARTMENT",
                 "QUIT"
             ]
         })
         .then((res) => {
 
-            switch(res.action) {
+            switch (res.action) {
 
                 case "VIEW_DEPARTMENTS":
                     viewDepartments();
@@ -38,7 +38,11 @@ function askForAction() {
                 case "CREATE_ROLE":
                     createRole();
                     return;
-                
+
+                case "CREATE_DEPARTMENT":
+                    createDepartment();
+                    return;
+
                 default:
                     connection.end();
 
@@ -55,7 +59,7 @@ function viewDepartments() {
             console.table(results);
 
             askForAction();
-        
+
         });
 }
 
@@ -66,9 +70,9 @@ function viewRoles() {
         .then((results) => {
 
             console.table(results);
-            
+
             askForAction();
-        
+
         });
 }
 
@@ -79,10 +83,31 @@ function viewEmployees() {
         .then((results) => {
 
             console.table(results);
-            
+
             askForAction();
-        
+
         });
+}
+
+function createDepartment() {
+
+    inquirer
+        .prompt({
+            message: "What is the name of the department?",
+            name: "name",
+            type: "input"
+        })
+        .then(res => {
+
+            console.log(res);
+
+            db.insertDepartment(res);
+
+            console.log("Department was successfully created!");
+
+            askForAction();
+
+        })
 }
 
 function createRole() {
@@ -91,7 +116,7 @@ function createRole() {
         .getDepartments()
         .then((departments) => {
 
-            const departmentChoices = 
+            const departmentChoices =
                 departments.map((department) => ({
                     value: department.id,
                     name: department.name
@@ -108,13 +133,13 @@ function createRole() {
                         message: "What is their salary?",
                         name: "salary",
                         type: "input",
-                        validate: function(value) {
+                        validate: function (value) {
                             if (isNaN(value) === false) {
-                              return true;
+                                return true;
                             }
                             console.log("Your entry was not a valid number");
                             return false;
-                          }
+                        }
                     },
                     {
                         message: "What department is this role a part of?",
@@ -127,14 +152,14 @@ function createRole() {
 
                     console.log(res);
 
-                    insertRole(res);
-            
-                    console.log("Your role was successfully created!");
-        
+                    db.insertRole(res);
+
+                    console.log("Role was successfully created!");
+
                     askForAction();
 
                 })
-            
+
         });
 }
 

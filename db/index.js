@@ -19,6 +19,13 @@ module.exports = {
         return connection.query("SELECT * FROM employee");
 
     },
+
+    insertDepartment(data) {
+
+        return connection.query("INSERT INTO department SET ?", data);
+
+    },
+
     insertRole(data) {
 
         return connection.query("INSERT INTO role SET ?", data);
