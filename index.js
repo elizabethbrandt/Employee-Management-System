@@ -1,4 +1,5 @@
 const inquirer = require("inquirer");
+const { insertRole } = require("./db");
 const db = require("./db");
 const connection = require("./db/connection")
 
@@ -84,34 +85,57 @@ function viewEmployees() {
         });
 }
 
-// function createRole() {
+function createRole() {
 
-//     db
-//         .getDepartments()
-//         .then((departments) => {
+    db
+        .getDepartments()
+        .then((departments) => {
 
-//             const departmentChoices = 
-//                 departments.map((department) => ({
-//                     value: department.id,
-//                     name: department.name
-//                 }))
+            const departmentChoices = 
+                departments.map((department) => ({
+                    value: department.id,
+                    name: department.name
+                }))
 
-//             inquirer
-//                 .prompt([
-//                     {
-//                         message: "What department is this role a part of?",
-//                         name: "department_id",
-//                         type: "list",
-//                         choices: departmentChoices
-//                     },
-//                 ])
-//                 .then(res => {
+            inquirer
+                .prompt([
+                    {
+                        message: "What is the job title?",
+                        name: "title",
+                        type: "input"
+                    },
+                    {
+                        message: "What is their salary?",
+                        name: "salary",
+                        type: "input",
+                        validate: function(value) {
+                            if (isNaN(value) === false) {
+                              return true;
+                            }
+                            console.log("Your entry was not a valid number");
+                            return false;
+                          }
+                    },
+                    {
+                        message: "What department is this role a part of?",
+                        name: "department_id",
+                        type: "list",
+                        choices: departmentChoices
+                    }
+                ])
+                .then(res => {
 
-//                     console.log(res);
+                    console.log(res);
 
-//                 })
+                    insertRole(res);
             
-//         });
-// }
+                    console.log("Your role was successfully created!");
+        
+                    askForAction();
+
+                })
+            
+        });
+}
 
 askForAction();
