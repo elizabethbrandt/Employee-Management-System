@@ -91,7 +91,7 @@ function viewRoles() {
 function viewEmployees() {
 
     db
-        .getEmployees()
+        .allEmployeeInfo()
         .then((results) => {
 
             console.table(results);
