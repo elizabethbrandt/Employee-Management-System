@@ -36,5 +36,20 @@ module.exports = {
 
         return connection.query("INSERT INTO employee SET ?", data);
 
+    },
+
+    updateEmployeeRole(data) {
+
+        return connection.query("UPDATE employee.role_id SET ? WHERE first_name = ?", data);
+
+    },
+
+    allEmployeeInfo() {
+
+        let query = "SELECT employee.first_name, employee.last_name, employee.manager_id,role.title, role.salary, department.name";
+        query += "FROM employee "
+        
+        // return connection.query("SELECT * FROM employee");
+        
     }
 }

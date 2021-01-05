@@ -17,6 +17,7 @@ function askForAction() {
                 "CREATE_ROLE",
                 "CREATE_DEPARTMENT",
                 "CREATE_EMPLOYEE",
+                "UPDATE_EMPLOYEE_ROLE",
                 "QUIT"
             ]
         })
@@ -48,12 +49,18 @@ function askForAction() {
                     createEmployee();
                     return;
 
+                case "UPDATE_EMPLOYEE_ROLE":
+                    updateRoleForEmployee();
+                    return;
+
                 default:
                     connection.end();
 
             }
         })
 }
+
+// VIEW FUNCTIONS
 
 function viewDepartments() {
 
@@ -93,6 +100,8 @@ function viewEmployees() {
 
         });
 }
+
+// CREATE FUNCTIONS
 
 function createDepartment() {
 
@@ -172,7 +181,6 @@ function createEmployee() {
 
     db
         .getRoles()
-        // .then(db.getEmployees())
         .then((roles) => {
 
             const roleChoices =
@@ -181,11 +189,14 @@ function createEmployee() {
                     name: role.title
                 }))
 
-            // const employeeChoices =
-            //     employees.map((employee) => ({
-            //         value: employee.id,
-            //         name: employee.first_name
-            //     }))
+            db.getEmployees()
+
+            .then(employees => {
+                const employeeChoices =
+                    employees.map((employee) => ({
+                        value: employee.id,
+                        name: `${employee.first_name} ${employee.last_name}`
+                    }))
 
             inquirer
                 .prompt([
@@ -205,26 +216,70 @@ function createEmployee() {
                         type: "list",
                         choices: roleChoices
                     },
+                    {
+                        message: "Who is their manager?",
+                        name: "manager_id",
+                        type: "list",
+                        choices: employeeChoices
+                    }
+                ])
+                .then(res => {
+
+                    console.log(res);
+
+                    db.insertEmployee(res);
+
+                    console.log("Employee was successfully created!");
+
+                    askForAction();
+
+                })
+            })
+        });
+}
+
+// UPDATE FUNCTION
+
+function updateRoleForEmployee() {
+
+    db
+        .getEmployees()
+        .then((employees) => {
+
+            const employeeChoices =
+                employees.map((employee) => ({
+                    value: employee.id,
+                    name: employee.first_name
+                }))
+
+            inquirer
+                .prompt([
+                    {
+                        message: "Which employee would you like to update?",
+                        name: "first_name",
+                        type: "list",
+                        choices: employeeChoices
+                    },
                     // {
-                    //     message: "Who is their manager?",
+                    //     message: "What is their new role?",
                     //     name: "role_id",
                     //     type: "list",
-                    //     choices: employeeChoices
+                    //     choices: roleChoices
                     // }
                 ])
-                // .then(res => {
+
+                // .then((res) => {
 
                 //     console.log(res);
 
-                //     db.insertRole(res);
+                //     db.updateEmployeeRole(res)
 
-                //     console.log("Role was successfully created!");
+                //     console.table(res);
 
                 //     askForAction();
 
-                // })
-
-        });
+                // });
+        })
 }
 
 askForAction();
