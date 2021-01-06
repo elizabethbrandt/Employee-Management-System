@@ -243,43 +243,54 @@ function createEmployee() {
 function updateRoleForEmployee() {
 
     db
-        .getEmployees()
-        .then((employees) => {
+        .getRoles()
+        .then((roles) => {
 
-            const employeeChoices =
-                employees.map((employee) => ({
-                    value: employee.id,
-                    name: employee.first_name
+            const roleChoices =
+                roles.map((role) => ({
+                    value: role.id,
+                    name: role.title
                 }))
+
+            db.getEmployees()
+
+            .then(employees => {
+                const employeeChoices =
+                    employees.map((employee) => ({
+                        value: employee.id,
+                        name: `${employee.first_name} ${employee.last_name}`
+                    }))
 
             inquirer
                 .prompt([
                     {
                         message: "Which employee would you like to update?",
-                        name: "first_name",
+                        name: "id",
                         type: "list",
                         choices: employeeChoices
                     },
-                    // {
-                    //     message: "What is their new role?",
-                    //     name: "role_id",
-                    //     type: "list",
-                    //     choices: roleChoices
-                    // }
+                    {
+                        message: "What is their new role?",
+                        name: "role_id",
+                        type: "list",
+                        choices: roleChoices
+                    }
                 ])
 
-                // .then((res) => {
+                .then((res) => {
 
-                //     console.log(res);
+                    console.log(res);
 
-                //     db.updateEmployeeRole(res)
+                    db.updateEmployeeRole(res);
 
-                //     console.table(res);
+                    console.table(res);
 
-                //     askForAction();
+                    askForAction();
 
-                // });
+                });
         })
+
+    });
 }
 
 askForAction();

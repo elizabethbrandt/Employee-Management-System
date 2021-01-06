@@ -40,7 +40,12 @@ module.exports = {
 
     updateEmployeeRole(data) {
 
-        return connection.query("UPDATE employee.role_id SET ? WHERE first_name = ?", data);
+        return connection.query("UPDATE employee SET ? WHERE ?", 
+        [
+        {role_id: data.role_id}
+        ,
+        {id: data.id}
+        ]);
 
     },
 
