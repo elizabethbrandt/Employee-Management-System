@@ -18,6 +18,7 @@ function askForAction() {
                 "CREATE_DEPARTMENT",
                 "CREATE_EMPLOYEE",
                 "UPDATE_EMPLOYEE_ROLE",
+                "DELETE_EMPLOYEE",
                 "QUIT"
             ]
         })
@@ -51,6 +52,10 @@ function askForAction() {
 
                 case "UPDATE_EMPLOYEE_ROLE":
                     updateRoleForEmployee();
+                    return;
+
+                case "DELETE_EMPLOYEE":
+                    removeEmployee();
                     return;
 
                 default:
@@ -301,6 +306,41 @@ function updateRoleForEmployee() {
         })
 
     });
+}
+
+function removeEmployee() {
+
+    db
+        .getEmployees()
+
+        .then(employees => {
+            const employeeChoices =
+                employees.map((employee) => ({
+                    value: employee.id,
+                    name: `${employee.first_name} ${employee.last_name}`
+                }))
+
+        inquirer
+            .prompt([
+                {
+                    message: "Which employee would you like to delete?",
+                    name: "id",
+                    type: "list",
+                    choices: employeeChoices,
+                }
+            ])
+            .then(res => {
+
+                console.log(res);
+
+                db.deleteEmployee(res);
+
+                console.log("Employee was successfully deleted!");
+
+                askForAction();
+
+            })
+        })
 }
 
 askForAction();
