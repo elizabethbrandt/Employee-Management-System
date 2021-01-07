@@ -42,38 +42,40 @@ The purpose of this project is to create an application that allows the user to 
 
 ## Usage
 
-* This application is usable through Heroku and allows a user to write, keep, review, and delete notes.
+* This application is a CLI and the functionality is within the console using node.
 
-Below is a screenshot that displays the notes as entered in on the app by the user
+Below is a screenshot that displays code to give the user options for the actions they'd like to use in their application
 
-![screenshot-of-notes-app](assets/notes.png)
+![screenshot-of-switch-cases](assets/switch-cases.png)
 
-And then how they are entered in on the db.json file that the application reads to display the data, along with it's unique ID that's used to identify it in order to delete it.
+Below is how it's displayed within the console
 
-![screenshot-of-json-file](assets/dbjson.png)
+![screenshot-of-node-menu](assets/node-menu.png)
 
+
+* This application is able to display tables that shows all the different departments, roles, and employees
+
+Below is a screenshot the code that will create the MySQL `join` table that ties all three tables together
+
+![screenshot-of-switch-cases](assets/code-join.png)
+
+Below is how it's displayed within the console
+
+![screenshot-of-node-menu](assets/join-table.png)
 
 
 ## Learning Outcomes
 
-#### The differences between the page and the api routes
+#### Modular Code
 
-* This was probably the biggest things I learned with this project as I was previously struggling to understand why there was a need for both and how they were different. What I learned was that the API route is what is managing the JSON data and conrolling what information is pushed to the `.json` file. Then the code defined within that `.get` for that specific `/route` controls what is displayed on the page.
+* This was really great practice at creating code in different places and being able to export and use them elsewhere. I tried to set it up so that I could build it more modular and create a `lib` folder with `view.js`, `create.js`, `update.js`, and `delete.js` files and export them, but was having difficulties. I would try to do this if I had more time. But was happy that my code was working and was hesitant to mess with it.
 
-#### Nanoid
+#### MySQL, JOIN tables, and Foreign Keys
 
-* I was really happy to discover this as something available in `npm` instead of having to spend time building code to create unique IDs. Learning to use the resources available to you is a skill I'm learning to develop.
-
-
-
-## Screenshots of deployed site
-
-Video showing all the functionality of the application
-
-![notes-gif](assets/note-taker.gif)
+* MySQL was honestly not that bad once you understand the syntax. The most complicated part of this was getting the JOIN tables to link and display as they should. Learning about and using foreign keys, I believe, made the linking of the tables make more sense. This created a line that I coud better visualize.
 
 
 
 ## Conclusion
 
-In conclusion, the server piece of this was not complicated. It's basically copying and pasting the basic format to make it run. Of course, you have to have all the right pieces, but it's pretty straightforward. Making the post work correctly was a bit of a challenge, but overall, once you understand how to use the fs modules and reading and writing files, it works pretty well.
+In conclusion, I learned a lot with this activity! And I truly enjoyed learning how to make all the connections, both within the tables and between all of the different files. As I mentioned, I would have loved to have figured out how to work the modular code a bit better, but I'll try and get that done later on.
