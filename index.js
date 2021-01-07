@@ -217,17 +217,27 @@ function createEmployee() {
                         choices: roleChoices
                     },
                     {
+                        message: "Would you like to add a manager?",
+                        name: "manager",
+                        type: "confirm",
+                    },
+                    {
                         message: "Who is their manager?",
                         name: "manager_id",
                         type: "list",
-                        choices: employeeChoices
+                        choices: employeeChoices,
+                        when: (answers) => answers.manager === true
                     }
                 ])
                 .then(res => {
 
                     console.log(res);
 
-                    db.insertEmployee(res);
+                    const {first_name, last_name, role_id, manager_id} = res
+
+                    const employeeData = {first_name, last_name, role_id, manager_id}
+
+                    db.insertEmployee(employeeData);
 
                     console.log("Employee was successfully created!");
 
