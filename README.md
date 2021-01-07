@@ -13,6 +13,10 @@ The purpose of this project is to create an application that allows the user to 
     * Roles
     * Departments
 * UPDATE the employee's role
+* DELETE:
+    * Employees
+    * Roles
+    * Departments
 
 
 
@@ -32,7 +36,7 @@ The purpose of this project is to create an application that allows the user to 
 
 * [GitHub Repo](https://github.com/elizabethbrandt/Employee-Management-System)
 
-* [Deployed Heroku Site](https://eb-note-taker.herokuapp.com/)
+* [YouTube Demo](https://youtu.be/9IkR809L_E4)
 
 
 
