@@ -20,6 +20,7 @@ function askForAction() {
                 "UPDATE_EMPLOYEE_ROLE",
                 "DELETE_EMPLOYEE",
                 "DELETE_ROLE",
+                "DELETE_DEPARTMENT",
                 "QUIT"
             ]
         })
@@ -61,6 +62,10 @@ function askForAction() {
 
                 case "DELETE_ROLE":
                     removeRole();
+                    return;
+
+                case "DELETE_DEPARTMENT":
+                    removeDepartment();
                     return;
 
                 default:
@@ -382,6 +387,42 @@ function removeRole() {
 
                 })
     
+        });
+}
+
+function removeDepartment() {
+
+    db
+        .getDepartments()
+        .then((departments) => {
+
+            const departmentChoices =
+                departments.map((department) => ({
+                    value: department.id,
+                    name: department.name
+                }))
+
+            inquirer
+                .prompt(
+                    {
+                        message: "Which department would you like to delete?",
+                        name: "id",
+                        type: "list",
+                        choices: departmentChoices
+                    }
+                )
+                .then(res => {
+
+                    console.log(res);
+
+                    db.deleteDepartment(res);
+
+                    console.log("Department was successfully deleted!");
+
+                    askForAction();
+
+                })
+
         });
 }
 
