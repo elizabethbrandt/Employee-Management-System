@@ -19,6 +19,7 @@ function askForAction() {
                 "CREATE_EMPLOYEE",
                 "UPDATE_EMPLOYEE_ROLE",
                 "DELETE_EMPLOYEE",
+                "DELETE_ROLE",
                 "QUIT"
             ]
         })
@@ -56,6 +57,10 @@ function askForAction() {
 
                 case "DELETE_EMPLOYEE":
                     removeEmployee();
+                    return;
+
+                case "DELETE_ROLE":
+                    removeRole();
                     return;
 
                 default:
@@ -341,6 +346,43 @@ function removeEmployee() {
 
             })
         })
+}
+
+function removeRole() {
+
+    db
+        .getRoles()
+        .then((roles) => {
+
+            const roleChoices =
+                roles.map((role) => ({
+                    value: role.id,
+                    name: role.title
+                }))
+
+            inquirer
+                .prompt([
+                    {
+                        message: "Which role would you like to delete?",
+                        name: "id",
+                        type: "list",
+                        choices: roleChoices
+                    }
+
+                ])
+                .then(res => {
+
+                    console.log(res);
+
+                    db.deleteRole(res);
+
+                    console.log("Role was successfully deleted!");
+
+                    askForAction();
+
+                })
+    
+        });
 }
 
 askForAction();
